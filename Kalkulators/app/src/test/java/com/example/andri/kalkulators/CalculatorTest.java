@@ -101,18 +101,5 @@ public class CalculatorTest {
         calc.putAction(CalculatorAction.DIVISION);
         calc.putOperand("0");
     }
-
-    /*
-
-        public void testDivisionWithException() {
-        try {
-            int i = 1 / 0;
-            fail(); //remember this line, else 'may' false positive
-        } catch (ArithmeticException e) {
-            assertThat(e.getMessage(), is("/ by zero"));
-			//assert others
-        }
-    }
-     */
-
+    
 }
