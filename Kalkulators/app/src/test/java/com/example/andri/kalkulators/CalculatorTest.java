@@ -94,17 +94,12 @@ public class CalculatorTest {
         assertEquals(calc.getResult(), result);
     }
 
-    @Test
+    @Test(expected = CalculatorExeption.class)
     public void calculatorExeptionTest() throws CalculatorExeption{
         calc = new CalculatorEngine();
-        try{
-            calc.putOperand("10");
-            calc.putAction(CalculatorAction.DIVISION);
-            calc.putOperand("0");
-        }catch(CalculatorExeption e){
-           assertThat(e.getMessage(),true );
-
-        }
+        calc.putOperand("10");
+        calc.putAction(CalculatorAction.DIVISION);
+        calc.putOperand("0");
     }
 
     /*
