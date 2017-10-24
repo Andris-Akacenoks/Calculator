@@ -1,6 +1,8 @@
 package com.example.andri.kalkulators;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +24,7 @@ public class CalculatorActivity extends Activity {
         buttonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //openTDL();
+                shareResult("Result has been shared!");
             }
         });
         linearLayout.addView(buttonShare);
@@ -41,7 +43,10 @@ public class CalculatorActivity extends Activity {
         setContentView(linearLayout);
     }
 
-    public void shareResult(String result){
-
+    public void shareResult(String input){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, input);
+        intent.setType("text/plain");
+        startActivity(intent);
     }
 }
