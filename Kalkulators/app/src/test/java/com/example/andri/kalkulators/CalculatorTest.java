@@ -101,5 +101,5 @@ public class CalculatorTest {
         calc.putAction(CalculatorAction.DIVISION);
         calc.putOperand("0");
     }
-    
+
 }

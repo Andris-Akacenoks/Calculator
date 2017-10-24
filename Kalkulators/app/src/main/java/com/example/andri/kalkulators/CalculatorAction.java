@@ -7,6 +7,7 @@ public enum CalculatorAction {
     DIVISION("/");
 
     public final String argument;
+
     CalculatorAction(String argument) {
         this.argument = argument;
     }
