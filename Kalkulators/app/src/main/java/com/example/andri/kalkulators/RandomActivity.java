@@ -22,7 +22,7 @@ public class RandomActivity extends Activity {
         setResult(RESULT_OK, resultIntent);
         finish();
     }
-    
+
     public int getRandomNumber(int min, int max){
         Random random = new Random();
         return random.nextInt(max) + min;

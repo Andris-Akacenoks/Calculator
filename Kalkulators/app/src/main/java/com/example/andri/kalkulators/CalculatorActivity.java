@@ -61,10 +61,10 @@ public class CalculatorActivity extends Activity {
             if (result != 0) {
                 showMessage("Random number: " + result);
             } else {
-                showMessage("Result was empty");
+                showMessage("Random number was zero! (that's not good)");
             }
         } else {
-            showMessage("Result not received");
+            showMessage("No random number received");
         }
     }
 
