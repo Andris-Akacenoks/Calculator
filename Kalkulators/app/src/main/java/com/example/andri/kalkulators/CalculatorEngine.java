@@ -1,5 +1,12 @@
 package com.example.andri.kalkulators;
 
+import java.math.BigDecimal;
+
+import static com.example.andri.kalkulators.CalculatorAction.ADDITION;
+import static com.example.andri.kalkulators.CalculatorAction.DIVISION;
+import static com.example.andri.kalkulators.CalculatorAction.MULTIPLICATION;
+import static com.example.andri.kalkulators.CalculatorAction.SUBTRACTION;
+
 public class CalculatorEngine implements Calculator{
     private Double operand;
     private CalculatorAction action;
@@ -18,37 +25,44 @@ public class CalculatorEngine implements Calculator{
     }
 
     public void putOperand(String argument) throws CalculatorExeption{
-        Double argumentDouble = Double.parseDouble(argument);
-        if (operand == null) {
-            operand = argumentDouble;
+        double other;
+        try {
+            other = Double.parseDouble(argument);
+        } catch (NullPointerException | NumberFormatException e) {
+            throw new CalculatorExeption( "Trouble parsing");
         }
-        else {
+        if (operand == null) {
+            operand = other;
+        }
+        else if (action != null){
             switch (action) {
                 case ADDITION:
-                    operand += argumentDouble;break;
+                    operand += other;break;
                 case SUBTRACTION:
-                    operand -= argumentDouble;break;
+                    operand -= other;break;
                 case MULTIPLICATION:
-                    operand *= argumentDouble;break;
+                    operand *= other;break;
                 case DIVISION:
-                    if (Double.isInfinite(operand / argumentDouble) || Double.isNaN(operand / argumentDouble)) {
-                        throw new CalculatorExeption("Nepareiza vertiba: " + operand);
-                    }
-                    else{
-                        operand /= argumentDouble;break;
-                    }
-                default: break;
+                    operand /= other;break;
             }
-            putAction(null);
+        } else {
+            throw new CalculatorExeption("No operations specified");
         }
-    }
+
+        if (operand.isInfinite() || operand.isNaN()) {
+            throw new CalculatorExeption("Operand can't be represented as a number");
+        }
+
+            //putAction(null);
+        }
+
 
     public void putAction(CalculatorAction calc){
         action = calc;
     }
 
     public String getResult(){
-        return (operand == null)? "0" : operand.toString();
-    }
+        double result = operand == null ? 0.0 : operand;
+        return new BigDecimal(result).stripTrailingZeros().toPlainString();    }
 
 }

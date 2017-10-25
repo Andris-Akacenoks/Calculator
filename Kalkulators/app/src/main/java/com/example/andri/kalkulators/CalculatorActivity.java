@@ -2,11 +2,11 @@ package com.example.andri.kalkulators;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +19,7 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
 
     public static final int REQUEST_CALCULATOR = 9;
     private static boolean isClearable;
+    private static int randomResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,29 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         buttonClear.setOnClickListener(this);
 
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        TextView resultView = findViewById(R.id.txtResult);
+
+        switch (item.getItemId()) {
+            case R.id.menuRandom:
+                requestRandom();
+                resultView.setText(String.valueOf(randomResult));
+                makeClearable(true);
+                return true;
+            case R.id.menuShare:
+                shareResult(resultView.getText().toString());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
         @Override
@@ -143,23 +167,23 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CALCULATOR:
-                onRandomResult(resultCode, data);
+                randomResult = onRandomResult(resultCode, data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void onRandomResult(int resultCode, Intent data) {
+    private int onRandomResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            int result = data.getIntExtra("parsedNumber", 1);
+            int result = data.getIntExtra("parsedNumber", 0);
             if (result != 0) {
-                showMessage("Random number: " + result);
+                return result;
             } else {
-                showMessage("Random number was zero! (that's not good)");
+                return 0;
             }
         } else {
-            showMessage("No random number received");
+            return -1;
         }
     }
 
