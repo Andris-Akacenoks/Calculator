@@ -2,67 +2,76 @@ package com.example.andri.kalkulators;
 
 import java.math.BigDecimal;
 
-import static com.example.andri.kalkulators.CalculatorAction.ADDITION;
-import static com.example.andri.kalkulators.CalculatorAction.DIVISION;
-import static com.example.andri.kalkulators.CalculatorAction.MULTIPLICATION;
-import static com.example.andri.kalkulators.CalculatorAction.SUBTRACTION;
-
-public class CalculatorEngine implements Calculator{
-    private Double operand;
+public class CalculatorEngine implements Calculator {
+    private Double           operand;
     private CalculatorAction action;
 
-    public void clear(){
+    @Override
+    public void clear() {
         operand = null;
         action = null;
     }
 
-    public CalculatorAction getCalculatorAction(){
-        return action;
-    }
-
-    public Double getOperand(){
-        return operand;
-    }
-
-    public void putOperand(String argument) throws CalculatorExeption{
+    @Override
+    public void putOperand(String otherString) throws CalculatorException {
         double other;
         try {
-            other = Double.parseDouble(argument);
+            other = Double.parseDouble(otherString);
         } catch (NullPointerException | NumberFormatException e) {
-            throw new CalculatorExeption( "Trouble parsing");
+            throw new CalculatorException("Input parsing failed", e);
         }
         if (operand == null) {
             operand = other;
-        }
-        else if (action != null){
+        } else if (action != null) {
             switch (action) {
                 case ADDITION:
-                    operand += other;break;
-                case SUBTRACTION:
-                    operand -= other;break;
+                    operand = add(operand, other);
+                    break;
+                case SUBSTRACTION:
+                    operand = sub(operand, other);
+                    break;
                 case MULTIPLICATION:
-                    operand *= other;break;
+                    operand = mul(operand, other);
+                    break;
                 case DIVISION:
-                    operand /= other;break;
+                    operand = div(operand, other);
+                    break;
             }
+            action = null;
         } else {
-            throw new CalculatorExeption("No operations specified");
+            throw new CalculatorException("No operations specified");
         }
 
         if (operand.isInfinite() || operand.isNaN()) {
-            throw new CalculatorExeption("Operand can't be represented as a number");
+            throw new CalculatorException("Operand can't be represented as a number");
         }
-
-            //putAction(null);
-        }
-
-
-    public void putAction(CalculatorAction calc){
-        action = calc;
     }
 
-    public String getResult(){
-        double result = operand == null ? 0.0 : operand;
-        return new BigDecimal(result).stripTrailingZeros().toPlainString();    }
+    @Override
+    public void putAction(CalculatorAction action) {
+        this.action = action;
+    }
 
+    @Override
+    public String getResult() {
+        double result = operand == null ? 0.0 : operand;
+        return new BigDecimal(result).stripTrailingZeros().toPlainString();
+
+    }
+
+    private double add(double operand, double other) {
+        return operand + other;
+    }
+
+    private double sub(double operand, double other) {
+        return operand - other;
+    }
+
+    private double mul(double operand, double other) {
+        return operand * other;
+    }
+
+    private double div(double operand, double other) {
+        return operand / other;
+    }
 }

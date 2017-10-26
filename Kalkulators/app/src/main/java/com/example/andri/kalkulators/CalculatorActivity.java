@@ -3,207 +3,184 @@ package com.example.andri.kalkulators;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static com.example.andri.kalkulators.CalculatorAction.ADDITION;
-import static com.example.andri.kalkulators.CalculatorAction.DIVISION;
-import static com.example.andri.kalkulators.CalculatorAction.MULTIPLICATION;
-import static com.example.andri.kalkulators.CalculatorAction.SUBTRACTION;
+public class CalculatorActivity extends Activity implements View.OnClickListener {
+    public static final int REQUEST_CODE = 371;
 
-public class CalculatorActivity extends Activity implements View.OnClickListener{
-
-    public static final int REQUEST_CALCULATOR = 9;
-    private static boolean isClearable;
-    private static int randomResult;
+    private Calculator calculator = new CalculatorEngine();
+    private boolean  rewriteDisplay;
+    private TextView display;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.calculator_activity_layout);
 
-        Button buttonZero = findViewById(R.id.btn0);
-        Button buttonOne = findViewById(R.id.btn1);
-        Button buttonTwo = findViewById(R.id.btn2);
-        Button buttonThree = findViewById(R.id.btn3);
-        Button buttonFour = findViewById(R.id.btn4);
-        Button buttonFive = findViewById(R.id.btn5);
-        Button buttonSix = findViewById(R.id.btn6);
-        Button buttonSeven = findViewById(R.id.btn7);
-        Button buttonEight = findViewById(R.id.btn8);
-        Button buttonNine = findViewById(R.id.btn9);
-        Button buttonAdd = findViewById(R.id.btnPlus);
-        Button buttonSubtract = findViewById(R.id.btnMinus);
-        Button buttonMultiply = findViewById(R.id.btnMultiply);
-        Button buttonDivide = findViewById(R.id.btnDivide);
-        Button buttonClear = findViewById(R.id.btnClear);
-        Button buttonPoint = findViewById(R.id.btnPoint);
-        Button buttonEquals = findViewById(R.id.btnEquals);
+        display = findViewById(R.id.txtResult);
 
-        buttonZero.setOnClickListener(this);
-        buttonOne.setOnClickListener(this);
-        buttonTwo.setOnClickListener(this);
-        buttonThree.setOnClickListener(this);
-        buttonFive.setOnClickListener(this);
-        buttonFour.setOnClickListener(this);
-        buttonSeven.setOnClickListener(this);
-        buttonSix.setOnClickListener(this);
-        buttonEight.setOnClickListener(this);
-        buttonNine.setOnClickListener(this);
-        buttonAdd.setOnClickListener(this);
-        buttonSubtract.setOnClickListener(this);
-        buttonMultiply.setOnClickListener(this);
-        buttonDivide.setOnClickListener(this);
-        buttonPoint.setOnClickListener(this);
-        buttonEquals.setOnClickListener(this);
-        buttonClear.setOnClickListener(this);
+        findViewById(R.id.btn0).setOnClickListener(this);
+        findViewById(R.id.btn1).setOnClickListener(this);
+        findViewById(R.id.btn2).setOnClickListener(this);
+        findViewById(R.id.btn3).setOnClickListener(this);
+        findViewById(R.id.btn4).setOnClickListener(this);
+        findViewById(R.id.btn5).setOnClickListener(this);
+        findViewById(R.id.btn6).setOnClickListener(this);
+        findViewById(R.id.btn7).setOnClickListener(this);
+        findViewById(R.id.btn8).setOnClickListener(this);
+        findViewById(R.id.btn9).setOnClickListener(this);
+        findViewById(R.id.btnPoint).setOnClickListener(this);
+        findViewById(R.id.btnClear).setOnClickListener(this);
+        findViewById(R.id.btnPlus).setOnClickListener(this);
+        findViewById(R.id.btnMinus).setOnClickListener(this);
+        findViewById(R.id.btnMultiply).setOnClickListener(this);
+        findViewById(R.id.btnDivide).setOnClickListener(this);
+        findViewById(R.id.btnEquals).setOnClickListener(this);
 
-
+        displayResult();
     }
+
     @Override
-    public boolean onCreateOptionsMenu (Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn0:
+                addToDisplay("0");
+                break;
+            case R.id.btn1:
+                addToDisplay("1");
+                break;
+            case R.id.btn2:
+                addToDisplay("2");
+                break;
+            case R.id.btn3:
+                addToDisplay("3");
+                break;
+            case R.id.btn4:
+                addToDisplay("4");
+                break;
+            case R.id.btn5:
+                addToDisplay("5");
+                break;
+            case R.id.btn6:
+                addToDisplay("6");
+                break;
+            case R.id.btn7:
+                addToDisplay("7");
+                break;
+            case R.id.btn8:
+                addToDisplay("8");
+                break;
+            case R.id.btn9:
+                addToDisplay("9");
+                break;
+            case R.id.btnPoint:
+                addToDisplay(".");
+                break;
+            case R.id.btnClear:
+                calculator.clear();
+                displayResult();
+                break;
+            case R.id.btnPlus:
+                calculator.putOperand(display.getText().toString());
+                calculator.putAction(CalculatorAction.ADDITION);
+                displayResult();
+                break;
+            case R.id.btnMinus:
+                calculator.putOperand(display.getText().toString());
+                calculator.putAction(CalculatorAction.SUBSTRACTION);
+                displayResult();
+                break;
+            case R.id.btnMultiply:
+                calculator.putOperand(display.getText().toString());
+                calculator.putAction(CalculatorAction.MULTIPLICATION);
+                displayResult();
+                break;
+            case R.id.btnDivide:
+                calculator.putOperand(display.getText().toString());
+                calculator.putAction(CalculatorAction.DIVISION);
+                displayResult();
+                break;
+            case R.id.btnEquals:
+                calculator.putOperand(display.getText().toString());
+                displayResult();
+                break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.calculator, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        TextView resultView = findViewById(R.id.txtResult);
-
         switch (item.getItemId()) {
             case R.id.menuRandom:
                 requestRandom();
-                resultView.setText(String.valueOf(randomResult));
-                makeClearable(true);
                 return true;
             case R.id.menuShare:
-                shareResult(resultView.getText().toString());
+                shareResult(display.getText().toString());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-        @Override
-        public void onClick(View calculatorView) {
-            Calculator calculator = new CalculatorEngine();
-            TextView resultView = findViewById(R.id.txtResult);
-
-            switch (calculatorView.getId()) {
-                case R.id.btnClear:
-                    calculator.clear();
-                    displayResult(calculator, resultView);
-                    break;
-                case R.id.btnEquals:
-                    try {
-                        calculator.putOperand(resultView.getText().toString());
-                        displayResult(calculator, resultView);
-                    } catch (CalculatorExeption e) {
-                        showMessage("Invalid operation");
-                    }
-                    break;
-                case R.id.btnPlus:
-                case R.id.btnMinus:
-                case R.id.btnMultiply:
-                case R.id.btnDivide:
-                    try {
-                        Button buttonOperation = findViewById(calculatorView.getId());
-                        calculator.putOperand(resultView.getText().toString());
-                        showMessage((buttonOperation.getText().toString()));
-
-
-                        switch (buttonOperation.getText().toString()) {
-                            case "+":
-                                calculator.putAction(ADDITION);
-                                break;
-                            case "-":
-                                calculator.putAction(SUBTRACTION);
-                                break;
-                            case "*":
-                                calculator.putAction(MULTIPLICATION);
-                                break;
-                            case "/":
-                                calculator.putAction(DIVISION);
-                                break;
-                            default:
-                                showMessage("Invalid operator");
-                        }
-                        displayResult(calculator, resultView);
-
-                    } catch (CalculatorExeption e) {
-                        showMessage("Invalid operation");
-                    }
-                    break;
-                default:
-                    Button buttonDigit = findViewById(calculatorView.getId());
-                    addToDisplay(buttonDigit.getText().toString(), resultView);
-                    showMessage((buttonDigit.getText().toString()));
-                    showMessage(("Result: "+calculator.getResult()));
-
-            }
-        }
-
-    public void displayResult(Calculator calculator, TextView text) {
-        text.setText(calculator.getResult());
-        makeClearable(true);
+    private void displayResult() {
+        display.setText(calculator.getResult());
+        rewriteDisplay = true;
     }
 
-    public void addToDisplay(String addedText, TextView textView){
-        if(getIsClearable()){
-            textView.setText("");
-            makeClearable(false);
+    private void addToDisplay(String part) {
+        if (!rewriteDisplay) {
+            part = display.getText() + part;
         }
-        else{
-            textView.append(addedText);
-        }
+        rewriteDisplay = false;
+        display.setText(part);
+    }
+
+    private void shareResult(String result) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, result);
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+    }
+
+    private void requestRandom() {
+        RandomActivity.launchForResult(this, REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CALCULATOR:
-                randomResult = onRandomResult(resultCode, data);
+            case REQUEST_CODE:
+                handleRandom(resultCode, data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private int onRandomResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            int result = data.getIntExtra("parsedNumber", 0);
-            if (result != 0) {
-                return result;
-            } else {
-                return 0;
-            }
+    private void handleRandom(int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            showMessage(getString(R.string.error_random_cancel));
         } else {
-            return -1;
+            int value = data.getIntExtra(RandomActivity.RESULT_KEY, 0);
+            if (value == 0) {
+                showMessage(getString(R.string.error_random_unknown));
+            } else {
+                display.setText(String.valueOf(value));
+                rewriteDisplay = true;
+            }
         }
-    }
-
-    public void makeClearable(boolean isAllowed){
-        isClearable = isAllowed;
-    }
-
-    public boolean getIsClearable(){
-        return isClearable;
-    }
-
-    public void shareResult(String input){
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, input);
-        intent.setType("text/plain");
-        startActivity(intent);
-    }
-
-    public void requestRandom(){
-        RandomActivity.startForResult(CalculatorActivity.this, REQUEST_CALCULATOR);
     }
 
     private void showMessage(String message) {

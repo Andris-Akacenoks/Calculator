@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kalkulators</string>
+    <string name="app_name">Kalkulators %d</string>
     <string name="generateNum">Ģenerēt skaitli</string>
     <string name="returnNum">Nokopēt skaitli</string>
 </resources>

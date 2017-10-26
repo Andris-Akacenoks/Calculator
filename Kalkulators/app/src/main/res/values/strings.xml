@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">Calculator</string>
-    <string name="generateNum">Generate number</string>
-    <string name="returnNum">Share number</string>
+    <string name="app_name">Calculator %d</string>
+    <string name="generate">Generate number</string>
+    <string name="send">Share number</string>
+
+        <string name="random">Random</string>
+        <string name="share">Share</string>
+        <string name="error_random_unknown">Something happened, random result was not received</string>
+        <string name="error_random_cancel">Random request was cancelled</string>
+
 </resources>
