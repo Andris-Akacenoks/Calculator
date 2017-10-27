@@ -64,9 +64,6 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
 
         displayResult();
 
-        Button helloButton = findViewById(R.id.btnEquals);
-
-
     }
 
     @Override
