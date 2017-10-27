@@ -57,53 +57,10 @@ public class WorkService extends IntentService {
                 e.printStackTrace();
             }
         }
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(WorkService.this, message, Toast.LENGTH_SHORT).show();
 
-            }
-        });
         Intent outgoing = new Intent(MESSAGE_ACTION);
         outgoing.putExtra(KEY_MESSAGE, message);
         LocalBroadcastManager.getInstance(this).sendBroadcast(outgoing);
     }
 
 }
-/*
-private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                String message = intent.getStringExtra(WorkService.KEY_MESSAGE);
-                TextView textView = findViewById(R.id.txtResult);
-                textView.setText(textView.getText() + "\n" + message);
-            }
-        }
-    };
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
-        manager.registerReceiver(receiver, new IntentFilter(WorkService.MESSAGE_ACTION));
-    }
-
-    @Override
-    protected void onStop() {
-        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
-        manager.unregisterReceiver(receiver);
-        super.onStop();
-    }
-
-
-        TextView text = findViewById(R.id.txtResult);
-        //text.setText(getString(R.string.app_name, System.currentTimeMillis()));
-        new HelloTask(CalculatorActivity.this).execute();
-
-        WorkService.showMessage(this, 0, "Hello");
-        WorkService.showMessage(this, 5000, "How are you");
-        WorkService.showMessage(this, 10000, "Cool");
-        WorkService.showMessage(this, 0, "Bye");
- */

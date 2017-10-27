@@ -32,6 +32,7 @@ import java.net.URL;
 
 public class CalculatorActivity extends Activity implements View.OnClickListener {
     public static final int REQUEST_CODE = 371;
+    public static final double PI = 3.1415926;
 
     private Calculator calculator = new CalculatorEngine();
     private boolean rewriteDisplay;
@@ -63,6 +64,7 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         findViewById(R.id.btnEquals).setOnClickListener(this);
 
         displayResult();
+
 
     }
 
@@ -166,6 +168,10 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
             case R.id.menuShare:
                 shareResult(display.getText().toString());
                 return true;
+            case R.id.menuPI:
+                display.setText(null);
+                WorkService.showMessage(this, 0, String.valueOf(PI));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -223,6 +229,32 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
 
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                String message = intent.getStringExtra(WorkService.KEY_MESSAGE);
+                TextView textView = findViewById(R.id.txtResult);
+                textView.setText(textView.getText() + "\n" + message);
+            }
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.registerReceiver(receiver, new IntentFilter(WorkService.MESSAGE_ACTION));
+    }
+
+    @Override
+    protected void onStop() {
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.unregisterReceiver(receiver);
+        super.onStop();
     }
 
 
