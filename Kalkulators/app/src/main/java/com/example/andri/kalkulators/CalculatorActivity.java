@@ -1,21 +1,41 @@
 package com.example.andri.kalkulators;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 
 public class CalculatorActivity extends Activity implements View.OnClickListener {
     public static final int REQUEST_CODE = 371;
 
     private Calculator calculator = new CalculatorEngine();
-    private boolean  rewriteDisplay;
-    private TextView display;
+    private boolean rewriteDisplay;
+    private static TextView display;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,74 +63,95 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         findViewById(R.id.btnEquals).setOnClickListener(this);
 
         displayResult();
+
+        Button helloButton = findViewById(R.id.btnEquals);
+
+
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn0:
-                addToDisplay("0");
-                break;
-            case R.id.btn1:
-                addToDisplay("1");
-                break;
-            case R.id.btn2:
-                addToDisplay("2");
-                break;
-            case R.id.btn3:
-                addToDisplay("3");
-                break;
-            case R.id.btn4:
-                addToDisplay("4");
-                break;
-            case R.id.btn5:
-                addToDisplay("5");
-                break;
-            case R.id.btn6:
-                addToDisplay("6");
-                break;
-            case R.id.btn7:
-                addToDisplay("7");
-                break;
-            case R.id.btn8:
-                addToDisplay("8");
-                break;
-            case R.id.btn9:
-                addToDisplay("9");
-                break;
-            case R.id.btnPoint:
-                addToDisplay(".");
-                break;
-            case R.id.btnClear:
-                calculator.clear();
-                displayResult();
-                break;
-            case R.id.btnPlus:
-                calculator.putOperand(display.getText().toString());
-                calculator.putAction(CalculatorAction.ADDITION);
-                displayResult();
-                break;
-            case R.id.btnMinus:
-                calculator.putOperand(display.getText().toString());
-                calculator.putAction(CalculatorAction.SUBSTRACTION);
-                displayResult();
-                break;
-            case R.id.btnMultiply:
-                calculator.putOperand(display.getText().toString());
-                calculator.putAction(CalculatorAction.MULTIPLICATION);
-                displayResult();
-                break;
-            case R.id.btnDivide:
-                calculator.putOperand(display.getText().toString());
-                calculator.putAction(CalculatorAction.DIVISION);
-                displayResult();
-                break;
-            case R.id.btnEquals:
-                calculator.putOperand(display.getText().toString());
-                displayResult();
-                break;
+        try {
+            switch (view.getId()) {
+                case R.id.btn0:
+                    addToDisplay("0");
+                    break;
+                case R.id.btn1:
+                    addToDisplay("1");
+                    break;
+                case R.id.btn2:
+                    addToDisplay("2");
+                    break;
+                case R.id.btn3:
+                    addToDisplay("3");
+                    break;
+                case R.id.btn4:
+                    addToDisplay("4");
+                    break;
+                case R.id.btn5:
+                    addToDisplay("5");
+                    break;
+                case R.id.btn6:
+                    addToDisplay("6");
+                    break;
+                case R.id.btn7:
+                    addToDisplay("7");
+                    break;
+                case R.id.btn8:
+                    addToDisplay("8");
+                    break;
+                case R.id.btn9:
+                    addToDisplay("9");
+                    break;
+                case R.id.btnPoint:
+                    addToDisplay(".");
+                    break;
+                case R.id.btnClear:
+                    calculator.clear();
+                    displayResult();
+                    break;
+                case R.id.btnPlus:
+                    calculator.putOperand(display.getText().toString());
+                    calculator.putAction(CalculatorAction.ADDITION);
+                    displayResult();
+                    break;
+                case R.id.btnMinus:
+                    calculator.putOperand(display.getText().toString());
+                    calculator.putAction(CalculatorAction.SUBSTRACTION);
+                    displayResult();
+                    break;
+                case R.id.btnMultiply:
+                    calculator.putOperand(display.getText().toString());
+                    calculator.putAction(CalculatorAction.MULTIPLICATION);
+                    displayResult();
+                    break;
+                case R.id.btnDivide:
+                    calculator.putOperand(display.getText().toString());
+                    calculator.putAction(CalculatorAction.DIVISION);
+                    displayResult();
+                    break;
+                case R.id.btnEquals:
+                    calculator.putOperand(display.getText().toString());
+                    displayResult();
+                    break;
+            }
+        } catch (CalculatorException e) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setTitle("An error occured");
+            dialog.setMessage("Exception caught: "+e.getMessage());
+            dialog.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    display.setText("");
+
+                }
+            })
+                    .setNegativeButton("Ignore", null)
+                    .show();
+
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -186,4 +227,7 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
+
 }
+
