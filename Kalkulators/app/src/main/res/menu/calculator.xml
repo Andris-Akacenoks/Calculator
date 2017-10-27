@@ -5,5 +5,9 @@
     <item android:title="@string/random" android:showAsAction="ifRoom"  android:id="@+id/menuRandom"/>
 
     <item android:title="@string/share" android:showAsAction="ifRoom" android:id="@+id/menuShare"/>
+        <item
+            android:showAsAction="ifRoom"
+            android:id="@+id/menuPI"
+            android:title="Get PI" />
 
-</menu>
+    </menu>

@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/btnShowNumber"
+        android:id="@+id/txtRandNumber"
         android:layout_width="match_parent"
         android:layout_height="352dp"
         android:text="num here" />
