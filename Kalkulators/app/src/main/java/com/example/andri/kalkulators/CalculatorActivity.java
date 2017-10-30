@@ -68,34 +68,6 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         findViewById(R.id.btnDivide).setOnClickListener(this);
         findViewById(R.id.btnEquals).setOnClickListener(this);
 
-
-        //findViewById(R.id.btnInc).setOnClickListener(new View.OnClickListener() {
-           // @SuppressLint("SetTextI18n")
-          //  @Override
-          //  public void onClick(View view) {
-            //    display.setText(display.getText() + "0");
-         //   }
-        //});
-
-
-
-        if (savedInstanceState != null) {
-            CharSequence savedText = savedInstanceState.getString("counter");
-            display.setText(savedText);
-        }
-
-        //findViewById(R.id.btnSave).setOnClickListener(this);
-        //findViewById(R.id.btnReset).setOnClickListener(this);
-        //findViewById(R.id.btnRestore).setOnClickListener(this);
-
-        displayResult();
-
-
-/////////////// ///////////////////////////////////////////////////////////
-
-
-
-
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -130,7 +102,6 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         rewriteDisplay = savedInstanceState.getBoolean("isScreenClear");
 
         if(!savedInstanceState.getString("action").isEmpty()){
-
             switch(savedInstanceState.getString("action")){
                 case "+":
                     calculator.putAction(CalculatorAction.ADDITION);
@@ -146,18 +117,12 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
                     break;
                 default:
                     break;
-
             }
-
         }
-
     }
 
     @Override
     public void onClick(View view) {
-
-
-
         try {
             switch (view.getId()) {
                 case R.id.btn0:
@@ -236,12 +201,8 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
             })
                     .setNegativeButton("Ignore", null)
                     .show();
-
         }
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -262,6 +223,17 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
             case R.id.menuPI:
                 display.setText(null);
                 WorkService.showMessage(this, 0, String.valueOf(PI));
+                return true;
+            case R.id.menuSave:
+                preferences.edit().putString("contents", display.getText().toString()).apply();
+                return true;
+            case R.id.menuReset:
+                preferences.edit().clear().apply();
+                display.setText(null);
+                return true;
+            case R.id.menuRestore:
+                String counter = preferences.getString("contents", "");
+                display.setText(counter);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -347,10 +319,5 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         manager.unregisterReceiver(receiver);
         super.onStop();
     }
-
-
-
-
-
 }
 
