@@ -8,12 +8,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,6 +40,7 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
     private Calculator calculator = new CalculatorEngine();
     private boolean rewriteDisplay;
     private static TextView display;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.calculator_activity_layout);
 
         display = findViewById(R.id.txtResult);
+        preferences = getSharedPreferences("save", MODE_PRIVATE);
 
         findViewById(R.id.btn0).setOnClickListener(this);
         findViewById(R.id.btn1).setOnClickListener(this);
@@ -63,17 +68,101 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         findViewById(R.id.btnDivide).setOnClickListener(this);
         findViewById(R.id.btnEquals).setOnClickListener(this);
 
+
+        //findViewById(R.id.btnInc).setOnClickListener(new View.OnClickListener() {
+           // @SuppressLint("SetTextI18n")
+          //  @Override
+          //  public void onClick(View view) {
+            //    display.setText(display.getText() + "0");
+         //   }
+        //});
+
+
+
+        if (savedInstanceState != null) {
+            CharSequence savedText = savedInstanceState.getString("counter");
+            display.setText(savedText);
+        }
+
+        //findViewById(R.id.btnSave).setOnClickListener(this);
+        //findViewById(R.id.btnReset).setOnClickListener(this);
+        //findViewById(R.id.btnRestore).setOnClickListener(this);
+
         displayResult();
 
+
+/////////////// ///////////////////////////////////////////////////////////
+
+
+
+
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if(calculator.getOperand() != null){
+            outState.putString("operand", calculator.getOperand().toString());
+        }
+        else{
+            outState.putString("operand","");
+        }
+        outState.putString("result", display.getText().toString());
+        outState.putBoolean("isScreenClear", rewriteDisplay);
+        if(calculator.getOperand() != null){
+            outState.putString("action", calculator.getActionToString());
+        }
+        else{
+            outState.putString("action","");
+
+        }
+        outState.putString("randNum", RandomActivity.RESULT_KEY); // TODO izmanit
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(!savedInstanceState.getString("operand").isEmpty()){
+            Double savedOperand = Double.valueOf(savedInstanceState.getString("operand"));
+            calculator.putOperand(savedInstanceState.getString("operand"));
+        }
+
+        display.setText(savedInstanceState.getString("result"));
+        rewriteDisplay = savedInstanceState.getBoolean("isScreenClear");
+
+        if(!savedInstanceState.getString("action").isEmpty()){
+
+            switch(savedInstanceState.getString("action")){
+                case "+":
+                    calculator.putAction(CalculatorAction.ADDITION);
+                    break;
+                case "-":
+                    calculator.putAction(CalculatorAction.SUBSTRACTION);
+                    break;
+                case "/":
+                    calculator.putAction(CalculatorAction.DIVISION);
+                    break;
+                case "*":
+                    calculator.putAction(CalculatorAction.MULTIPLICATION);
+                    break;
+                default:
+                    break;
+
+            }
+
+        }
 
     }
 
     @Override
     public void onClick(View view) {
+
+
+
         try {
             switch (view.getId()) {
                 case R.id.btn0:
                     addToDisplay("0");
+
                     break;
                 case R.id.btn1:
                     addToDisplay("1");
@@ -150,6 +239,8 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
 
         }
     }
+
+
 
 
     @Override
@@ -256,6 +347,9 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         manager.unregisterReceiver(receiver);
         super.onStop();
     }
+
+
+
 
 
 }
