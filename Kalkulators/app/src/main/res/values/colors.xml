@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#cc3300</color>
     <color name="colorAccent">#cc3300</color>
     <color name="greyBackground">#b3b3b3</color>
-    <color name="blueColor">#003366</color>
+    <color name="blueColor">#006699</color>
     <color name="whiteColor">#ffffff</color>
+
+
 </resources>

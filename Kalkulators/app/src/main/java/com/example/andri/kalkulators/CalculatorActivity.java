@@ -189,6 +189,7 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
                     break;
             }
         } catch (CalculatorException e) {
+
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle("An error occured");
             dialog.setMessage("Exception caught: "+e.getMessage());
