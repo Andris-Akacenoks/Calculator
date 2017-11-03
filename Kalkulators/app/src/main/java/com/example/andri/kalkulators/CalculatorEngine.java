@@ -2,6 +2,7 @@ package com.example.andri.kalkulators;
 
 import java.math.BigDecimal;
 
+
 public class CalculatorEngine implements Calculator {
     private Double           operand;
     private CalculatorAction action;
@@ -58,6 +59,28 @@ public class CalculatorEngine implements Calculator {
         return new BigDecimal(result).stripTrailingZeros().toPlainString();
 
     }
+    @Override
+    public Double getOperand(){
+        return operand;
+    }
+
+    @Override
+    public String getActionToString() {
+        switch(action){
+            case ADDITION:
+                return "+";
+            case SUBSTRACTION:
+                return "-";
+            case MULTIPLICATION:
+                return "*";
+            case DIVISION:
+                return "/";
+            default:
+                return "";
+        }
+    }
+
+
 
     private double add(double operand, double other) {
         return operand + other;

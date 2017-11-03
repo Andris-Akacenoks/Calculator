@@ -39,7 +39,7 @@ public class RandomActivity extends Activity {
         starter.startActivityForResult(new Intent(starter, RandomActivity.class), requestCode);
     }
 
-    private String number;
+    public String number;
     private Random random = new Random();
 
     @Override
@@ -84,6 +84,10 @@ public class RandomActivity extends Activity {
         super.onStart();
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
         manager.registerReceiver(receiver, new IntentFilter(WorkService.MESSAGE_ACTION));
+    }
+
+    public String getRandomNumToString(){
+        return number;
     }
 
     @Override

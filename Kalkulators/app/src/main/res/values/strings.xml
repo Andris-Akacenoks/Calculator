@@ -2,10 +2,14 @@
     <string name="app_name">Calculator %d</string>
     <string name="generate">Generate number</string>
     <string name="send">Share number</string>
-
-    <string name="random">Random</string>
-    <string name="share">Share</string>
+    <string name="getPI">Get PI</string>
+    <string name="random">Get random number</string>
+    <string name="share">Share result</string>
+    <string name="restore">Restore saved state</string>
+    <string name="reset">Reset result</string>
+    <string name="save">Save result</string>
     <string name="error_random_unknown">Something happened, random result was not received</string>
     <string name="error_random_cancel">Random request was cancelled</string>
+
 
 </resources>

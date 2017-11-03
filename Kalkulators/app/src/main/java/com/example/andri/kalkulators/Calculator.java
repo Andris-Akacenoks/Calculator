@@ -8,4 +8,8 @@ public interface Calculator {
     void putAction(CalculatorAction action);
 
     String getResult();
+
+    Double getOperand();
+
+    String getActionToString();
 }

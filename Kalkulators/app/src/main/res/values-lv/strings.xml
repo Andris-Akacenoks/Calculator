@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Kalkulators %d</string>
-    <string name="generateNum">Ģenerēt skaitli</string>
-    <string name="returnNum">Nokopēt skaitli</string>
+    <string name="generate">Ģenerēt skaitli</string>
+    <string name="send">Pārsūtīt rezultātu</string>
+    <string name="getPI">Atgriest PI</string>
+    <string name="random">Nejaušs skaitlis</string>
+    <string name="share">Dalīties</string>
+    <string name="restore">Atjaunot saglabāto</string>
+    <string name="reset">Atiestatīt rezultātu</string>
+    <string name="save">Saglabāt rezultātu</string>
 </resources>
