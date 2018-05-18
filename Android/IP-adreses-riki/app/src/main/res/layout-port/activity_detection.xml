@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="com.example.tdl_andrisakacenoks.ipadresesrki.DetectionActivity">
+
+    <TextView
+        android:id="@+id/txtHint"
+        android:layout_width="89dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="36dp"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txt-ipField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt-ipField"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/txt-ipField"
+        android:layout_width="270dp"
+        android:layout_height="37dp"
+        android:layout_marginBottom="89dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="47dp"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_dark"
+        android:textSize="30sp"
+        android:textStyle="normal|italic"
+        app:layout_constraintBottom_toTopOf="@+id/btn_getIP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/txtHint"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_getIP"
+        style="?android:attr/segmentedButtonStyle"
+        android:layout_width="236dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="28dp"
+        android:shadowColor="@color/colorPrimaryDark"
+        android:text="Show my IP"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnOpenInfoActivity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt-ipField" />
+
+    <Button
+        android:id="@+id/btnOpenInfoActivity"
+        style="?android:attr/segmentedButtonStyle"
+        android:layout_width="233dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="279dp"
+        android:text="Speed test"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_getIP"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_getIP"
+        app:layout_constraintTop_toBottomOf="@+id/btn_getIP" />
+
+
+</android.support.constraint.ConstraintLayout>

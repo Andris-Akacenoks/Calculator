@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">IP utils</string>
+    <string name="buttonGetIp">Show my IP</string>
+    <string name="openSpeedTest">Speed test</string>
+    <string name="YourIp">Your IP:</string>
+    <string name="tempIp"> </string>
+</resources>
